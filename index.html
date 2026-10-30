@@ -3,90 +3,74 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#095c60">
-  <meta name="description" content="Explore projected growth and achievement using 2025 student norms and R calculations in your browser.">
-  <title>Growth &amp; achievement calculator · Norms Lab</title>
+  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="2025 student achievement and growth norms calculator.">
+  <title>Growth and achievement calculator</title>
   <link rel="stylesheet" href="./styles.css">
   <script type="module" src="./app.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#calculator">Skip to calculator</a>
-  <header class="site-header">
-    <div class="page-width header-inner">
-      <a class="wordmark" href="./" aria-label="Norms Lab home"><span class="mark" aria-hidden="true">N</span> NORMS LAB</a>
-      <div class="header-meta"><span>2025 student norms</span><span class="draft-badge">Review draft</span></div>
-    </div>
-  </header>
   <main class="page-width" id="calculator">
-    <section class="intro" aria-labelledby="page-title">
-      <div>
-        <p class="eyebrow">FROM STARTING SCORE TO GROWTH</p>
-        <h1 id="page-title">Growth &amp; achievement calculator</h1>
-        <p class="intro-copy">Explore expected growth, compare an actual result, and see where each score sits relative to student norms.</p>
-      </div>
-      <div class="runtime-status" id="runtime-status" role="status" aria-live="polite"><span class="status-dot" aria-hidden="true"></span><span id="runtime-label">Starting R…</span></div>
-    </section>
+    <header class="page-heading">
+      <div><h1 id="page-title">Growth and achievement calculator</h1><p>2025 student norms · Review draft</p></div>
+      <div class="runtime-status" id="runtime-status" role="status" aria-live="polite"><span id="runtime-label">Loading…</span></div>
+    </header>
 
     <section class="panel scenario-panel" aria-labelledby="scenario-title">
-      <div class="section-heading"><div><p class="eyebrow">01 · YOUR SCENARIO</p><h2 id="scenario-title">Choose the two timepoints</h2></div><button id="reset-button" class="text-button" type="button">Reset example <span aria-hidden="true">↺</span></button></div>
       <form id="scenario-form">
-        <div class="scenario-toolbar">
-          <div class="field subject-field"><label for="subject">Subject</label><select id="subject" name="subject"><option value="read" selected>Reading</option><option value="math">Mathematics</option><option value="lang">Language Usage</option><option value="sci">General Science</option></select></div>
-          <label class="checkbox-label" for="include_actual"><input id="include_actual" name="include_actual" type="checkbox" checked><span>Include an actual ending score</span></label>
+        <div class="section-heading"><h2 id="scenario-title">Enter: Subject &amp; Grade Level(s)</h2><button id="reset-button" class="text-button" type="button">Reset example</button></div>
+        <div class="selection-grid">
+          <div class="field"><label for="subject">Subject</label><select id="subject" name="subject"><option value="math">Mathematics</option><option value="read" selected>Reading</option><option value="sci">Science</option><option value="lang">Language Usage</option></select></div>
+          <div class="field"><label for="start_grade">Starting Grade</label><select id="start_grade" name="start_grade"><option value="0">Kindergarten</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6" selected>6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option></select></div>
+          <div class="field"><label for="end_grade">Ending Grade</label><select id="end_grade" name="end_grade"><option value="0">Kindergarten</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6" selected>6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select></div>
         </div>
+        <h2 class="test-results-heading" id="test-results-title">Enter: Student Test Results</h2>
         <div class="timepoint-grid">
-          <fieldset class="timepoint"><legend><span class="timepoint-step">A</span> Starting timepoint</legend><div class="field-grid">
-            <div class="field"><label for="start_grade">Starting grade</label><select id="start_grade" name="start_grade"><option value="0">Kindergarten</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6" selected>6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option></select></div>
-            <div class="field"><label for="start_week">Starting week</label><input id="start_week" name="start_week" type="number" min="1" max="42" step="1" value="4" required aria-describedby="weeks-hint"></div>
+          <fieldset class="timepoint"><legend>Starting</legend><div class="field-grid">
+            <div class="field"><label for="start_week">Starting Weeks of Instruction</label><input id="start_week" name="start_week" type="number" min="1" max="42" step="1" value="4" required aria-describedby="weeks-hint"></div>
             <div class="field"><label for="start_rit">Starting RIT</label><input id="start_rit" name="start_rit" type="text" inputmode="decimal" value="180" required aria-describedby="rit-hint"></div>
           </div></fieldset>
-          <fieldset class="timepoint"><legend><span class="timepoint-step">B</span> Ending timepoint</legend><div class="field-grid">
-            <div class="field"><label for="end_grade">Ending grade</label><select id="end_grade" name="end_grade"><option value="0">Kindergarten</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6" selected>6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select></div>
-            <div class="field"><label for="end_week">Ending week <span class="optional">optional</span></label><input id="end_week" name="end_week" type="text" inputmode="numeric" value="32" aria-describedby="weeks-hint"></div>
-            <div class="field"><label for="end_rit">Ending RIT <span class="optional">optional</span></label><input id="end_rit" name="end_rit" type="text" inputmode="decimal" value="204" aria-describedby="rit-hint ending-hint"></div>
+          <fieldset class="timepoint"><legend>Ending</legend><div class="field-grid">
+            <div class="field"><label for="end_week">Ending Weeks of Instruction <span class="optional">(Optional)</span></label><input id="end_week" name="end_week" type="text" inputmode="numeric" value="32" aria-describedby="weeks-hint"></div>
+            <div class="field"><label for="end_rit">Ending RIT <span class="optional">(Optional)</span></label><input id="end_rit" name="end_rit" type="text" inputmode="decimal" value="204" aria-describedby="rit-hint ending-hint"></div>
           </div></fieldset>
         </div>
-        <div class="input-help"><span id="weeks-hint">Weeks are instructional weeks, from 1 to 42.</span><span id="rit-hint">RIT range: 100–300.</span><span id="ending-hint">Leave ending RIT blank to see a forecast.</span></div>
-        <div class="form-footer"><p id="form-status" role="status" aria-live="polite">Loading the R calculation engine and reference tables…</p><button class="primary-button" id="calculate-button" type="submit" disabled><span>Calculate</span><span aria-hidden="true">→</span></button></div>
+        <div class="input-actions"><div class="input-help"><span id="weeks-hint">Instructional weeks: 1–42.</span><span id="rit-hint">RIT: 100–300.</span><span id="ending-hint">Leave ending RIT blank for a forecast.</span></div><label class="checkbox-label" for="include_actual"><input id="include_actual" name="include_actual" type="checkbox" checked><span>Include actual ending score</span></label></div>
+        <div class="form-footer"><p id="form-status" role="status" aria-live="polite">Loading calculator…</p><button class="primary-button" id="calculate-button" type="submit" disabled><span>Calculate</span></button></div>
       </form>
     </section>
 
     <div id="calculation-error" class="notice error-notice" role="alert" hidden></div>
-    <section id="warnings" class="notice warning-notice" aria-label="Results notes" aria-live="polite" hidden><strong>About this scenario</strong><ul id="warning-list"></ul></section>
+    <section id="warnings" class="notice warning-notice" aria-label="Results notes" aria-live="polite" hidden><strong>Notes</strong><ul id="warning-list"></ul></section>
 
     <section class="panel chart-panel" aria-labelledby="chart-title" id="results" aria-busy="true">
-      <div class="section-heading chart-heading"><div><p class="eyebrow">02 · GROWTH AT A GLANCE</p><h2 id="chart-title">Projected and actual growth</h2><p id="scenario-summary" class="section-copy">Your result will appear when R is ready.</p></div><div class="chart-legend" aria-label="Chart legend"><span><i class="legend-line projected" aria-hidden="true"></i>Projected</span><span><i class="legend-line actual" aria-hidden="true"></i>Actual</span></div></div>
-      <div class="chart-container" id="chart-container"><div class="chart-placeholder"><span class="placeholder-symbol" aria-hidden="true">↗</span><p>Preparing your growth chart…</p></div></div>
-      <p class="chart-footnote" id="chart-footnote">Projected growth is conditional on the starting score. It is a reference for a comparable student, not a guaranteed outcome.</p>
+      <div class="section-heading chart-heading"><div><h2 id="chart-title">Projected and actual RIT</h2><p id="scenario-summary" class="section-copy">Loading…</p></div><div class="chart-legend" aria-label="Chart legend"><span><i class="legend-line projected" aria-hidden="true"></i>Projected</span><span><i class="legend-line actual" aria-hidden="true"></i>Actual</span></div></div>
+      <div class="chart-container" id="chart-container"><div class="chart-placeholder"><p>Loading…</p></div></div>
     </section>
 
-    <section class="growth-results" aria-label="Growth results">
-      <article class="panel metric-panel"><div class="metric-panel-heading"><span class="section-icon forecast-icon" aria-hidden="true">↗</span><div><h2>Expected growth</h2><p>Based on the starting score and selected interval</p></div></div><div class="metric-grid">
-        <div class="metric"><span class="metric-label">Conditional growth projection</span><output data-metric="conditional_projection">—</output><span class="metric-unit">RIT points</span></div>
-        <div class="metric"><span class="metric-label">Projected ending RIT</span><output data-metric="projected_ending_rit">—</output><span class="metric-unit">RIT score</span></div>
-        <div class="metric"><span class="metric-label">SD of growth</span><output data-metric="conditional_sd">—</output><span class="metric-unit">RIT points</span></div>
-      </div></article>
-      <article class="panel metric-panel"><div class="metric-panel-heading"><span class="section-icon actual-icon" aria-hidden="true">✓</span><div><h2>Actual growth</h2><p>Available when an actual ending score is included</p></div></div><div class="metric-grid">
-        <div class="metric"><span class="metric-label">Observed growth</span><output data-metric="observed">—</output><span class="metric-unit">RIT points</span></div>
-        <div class="metric"><span class="metric-label">Conditional growth index</span><output data-metric="cgi">—</output><span class="metric-unit">CGI</span></div>
-        <div class="metric"><span class="metric-label">Conditional growth percentile</span><output data-metric="cgp">—</output><span class="metric-unit">CGP · 1–99</span></div>
-      </div></article>
-    </section>
+    <div class="results-grid">
+      <section class="panel growth-panel" aria-labelledby="growth-title"><h2 id="growth-title">Growth Norms</h2><table class="growth-table"><caption class="sr-only">Growth norms results</caption><tbody>
+        <tr><th scope="row">Observed Growth</th><td><output data-metric="observed">—</output></td></tr>
+        <tr><th scope="row">Conditional Growth Projection</th><td><output data-metric="conditional_projection">—</output></td></tr>
+        <tr><th scope="row">SD of Growth</th><td><output data-metric="conditional_sd">—</output></td></tr>
+        <tr><th scope="row">Conditional Growth Index (CGI)</th><td><output data-metric="cgi">—</output></td></tr>
+        <tr><th scope="row">Conditional Growth Percentile (CGP)</th><td><output data-metric="cgp">—</output></td></tr>
+      </tbody></table></section>
+      <section class="panel achievement-panel" aria-labelledby="achievement-title"><h2 id="achievement-title">Achievement Norms</h2><div class="achievement-table-wrap"><table class="achievement-table"><caption class="sr-only">Starting and ending achievement norms</caption><thead><tr><th scope="col">Metric</th><th scope="col">Starting<span id="starting-context" class="table-context">Grade 6 · Week 4</span></th><th scope="col">Ending<span id="ending-context" class="table-context">Grade 6 · Week 32</span></th></tr></thead><tbody>
+        <tr><th scope="row">Mean RIT score</th><td><output data-metric="starting_mean">—</output></td><td><output data-metric="ending_mean">—</output></td></tr>
+        <tr><th scope="row">Standard Deviation (SD) RIT score</th><td><output data-metric="starting_sd">—</output></td><td><output data-metric="ending_sd">—</output></td></tr>
+        <tr><th scope="row">Achievement Percentile</th><td><output data-metric="starting_percentile">—</output></td><td><output data-metric="ending_percentile">—</output></td></tr>
+      </tbody></table></div></section>
+    </div>
 
-    <section class="panel achievement-panel" aria-labelledby="achievement-title"><div class="section-heading"><div><p class="eyebrow">03 · ACHIEVEMENT</p><h2 id="achievement-title">Put each score in context</h2><p class="section-copy">Starting and ending achievement use their own grade and instructional week.</p></div><button class="secondary-button" id="download-button" type="button" disabled>Download results <span aria-hidden="true">↓</span></button></div>
-      <div class="achievement-table-wrap"><table class="achievement-table"><caption class="sr-only">Starting and ending achievement statistics</caption><thead><tr><th scope="col">Timepoint</th><th scope="col">National mean RIT</th><th scope="col">Achievement SD</th><th scope="col">Achievement percentile</th></tr></thead><tbody><tr><th scope="row"><span class="table-timepoint">Starting</span><span id="starting-context" class="table-context">Grade 6 · Week 4</span></th><td><output data-metric="starting_mean">—</output></td><td><output data-metric="starting_sd">—</output></td><td><output data-metric="starting_percentile">—</output><span class="percentile-suffix"> / 99</span></td></tr><tr><th scope="row"><span class="table-timepoint">Ending</span><span id="ending-context" class="table-context">Grade 6 · Week 32</span></th><td><output data-metric="ending_mean">—</output></td><td><output data-metric="ending_sd">—</output></td><td><output data-metric="ending_percentile">—</output><span class="percentile-suffix"> / 99</span></td></tr></tbody></table></div>
-    </section>
-
-    <section class="interpretation-grid" aria-label="How to interpret these results"><article><span class="card-number">01</span><h3>A projection, conditional on the start</h3><p>Expected growth accounts for the student’s starting RIT, subject, grades and instructional weeks. It can differ from average growth for the grade.</p></article><article><span class="card-number">02</span><h3>Growth and achievement differ</h3><p>CGP compares the growth with comparable students. Achievement percentile describes a score’s position among students at that grade and week.</p></article><article><span class="card-number">03</span><h3>Missing is meaningful</h3><p>A dash means that a result is unavailable for these inputs. Valid achievement results can still appear when growth norms are unavailable.</p></article></section>
-
-    <details class="panel calculation-details" id="calculation-details"><summary><span><span class="eyebrow">LOOK UNDER THE HOOD</span><span class="details-title">Calculations, reference values &amp; source notes</span></span><span class="details-chevron" aria-hidden="true">+</span></summary><div class="details-content">
-      <div class="details-grid"><div><h3>The R calculations</h3><dl class="formula-list"><dt>Conditional growth projection · M01</dt><dd><code>P2 + (V12 / V11) × (starting RIT − P1)</code></dd><dt>Conditional SD of growth · M02</dt><dd><code>√(V22 − V12² / V11)</code></dd><dt>Conditional growth index</dt><dd><code>(observed growth − projection) / SD of growth</code></dd><dt>Percentile approximation · M05</dt><dd><code>100 / (1 + exp(−0.07056 × z³ − 1.5976 × z))</code></dd></dl><p>For growth, <em>z</em> is CGI. For achievement, <em>z</em> is (score − national mean) / achievement SD. M05 is evaluated without rounding the input; displayed percentiles round positive ties upward and are limited to 1–99.</p><a class="source-link" href="./r/norms_engine.R" target="_blank" rel="noopener">View the R calculation code <span aria-hidden="true">↗</span></a></div><div><h3>Selected growth reference</h3><p>P1 is the starting mean; P2 is average grade growth. V11 and V22 are variances, and V12 is the covariance used in the conditional calculations.</p><table class="reference-table"><caption class="sr-only">Selected growth parameters</caption><tbody id="reference-parameters"><tr><th>P1</th><td>—</td></tr><tr><th>P2</th><td>—</td></tr><tr><th>V11</th><td>—</td></tr><tr><th>V12</th><td>—</td></tr><tr><th>V21</th><td>—</td></tr><tr><th>V22</th><td>—</td></tr></tbody></table><p class="reference-location" id="reference-location">No reference selected yet.</p></div></div>
+    <details class="panel calculation-details" id="calculation-details"><summary>Look under the hood</summary><div class="details-content">
+      <div class="details-grid"><div><h3>Calculations</h3><p id="chart-footnote">Projected ending RIT: <output data-metric="projected_ending_rit" class="inline-value">—</output></p><dl class="formula-list"><dt>Conditional growth projection · M01</dt><dd><code>P2 + (V12 / V11) × (starting RIT − P1)</code></dd><dt>Conditional SD of growth · M02</dt><dd><code>√(V22 − V12² / V11)</code></dd><dt>Conditional growth index</dt><dd><code>(observed growth − projection) / SD of growth</code></dd><dt>Percentile approximation · M05</dt><dd><code>100 / (1 + exp(−0.07056 × z³ − 1.5976 × z))</code></dd></dl><p>For growth, <em>z</em> is CGI. For achievement, <em>z</em> is (score − national mean) / achievement SD. M05 is evaluated without rounding the input; displayed percentiles round positive ties upward and are limited to 1–99.</p><a class="source-link" href="./r/norms_engine.R" target="_blank" rel="noopener">View the R calculation code</a></div><div><h3>Selected growth reference</h3><p>P1 is the starting mean; P2 is average grade growth. V11 and V22 are variances, and V12 is the covariance used in the conditional calculations.</p><table class="reference-table"><caption class="sr-only">Selected growth parameters</caption><tbody id="reference-parameters"><tr><th>P1</th><td>—</td></tr><tr><th>P2</th><td>—</td></tr><tr><th>V11</th><td>—</td></tr><tr><th>V12</th><td>—</td></tr><tr><th>V21</th><td>—</td></tr><tr><th>V22</th><td>—</td></tr></tbody></table><p class="reference-location" id="reference-location">No reference selected yet.</p></div></div>
       <div class="diagnostic-block"><h3>Percentile method comparison</h3><p>The main results use M05 to match the current Tableau review calculator. R’s exact normal CDF, <code>stats::pnorm</code>, is shown here for comparison only. Small differences can cross an integer-rounding boundary.</p><table class="diagnostic-table"><caption class="sr-only">M05 and exact normal CDF diagnostic comparison</caption><thead><tr><th scope="col">Percentile</th><th scope="col">M05 · used above</th><th scope="col">Exact normal CDF · diagnostic</th></tr></thead><tbody><tr><th scope="row">Starting achievement</th><td id="diag-start-m05">—</td><td id="diag-start-pnorm">—</td></tr><tr><th scope="row">Ending achievement</th><td id="diag-end-m05">—</td><td id="diag-end-pnorm">—</td></tr><tr><th scope="row">Conditional growth</th><td id="diag-growth-m05">—</td><td id="diag-growth-pnorm">—</td></tr></tbody></table></div>
       <div class="source-notes"><h3>Source and review limits</h3><p>This prototype uses pinned 2025 student-norm reference tables: 75,720 unique growth combinations and 1,848 achievement combinations. The calculator looks up the exact subject, grades and weeks; it does not substitute a nearby interval or refit a norms model.</p><p>Mathematics and Reading grade 12 achievement mean, SD and percentiles are withheld pending source review. Valid growth results can remain available. Invalid asymmetric covariance rows remain excluded. Source/coefficient lineage questions and owner review remain open.</p><p class="source-hash">Parameter workbook SHA256: <code id="source-hash">930a855f265a4ef50cf0c92696d2dcb30e6309b0c9b88c14dc8433e7f156dba9</code></p></div>
-      <div class="self-checks"><div><h3>Reference checks</h3><p>Run selected known examples and input checks using the R engine in this browser. These checks support review; they are not exhaustive validation.</p></div><button type="button" class="secondary-button" id="self-check-button" disabled>Run reference checks</button><p id="self-check-status" role="status" aria-live="polite">Checks have not been run in this browser.</p></div>
-    </div></details>
-    <footer class="page-footer"><p>Norms Lab · 2025 student norms · M05 percentile method</p><p>Independent review prototype · Not an official NWEA product</p></footer>
+      <div class="self-checks"><div><h3>Reference checks</h3><p>Run selected known examples and input checks using the R engine in this browser. Selected checks; not exhaustive validation.</p></div><button type="button" class="secondary-button" id="self-check-button" disabled>Run reference checks</button><p id="self-check-status" role="status" aria-live="polite">Checks have not been run in this browser.</p></div>
+    <div class="details-actions"><button class="secondary-button" id="download-button" type="button" disabled>Download results</button></div></div></details>
   </main>
-  <noscript><div class="noscript-note">JavaScript is required to start R and run this calculator in your browser.</div></noscript>
+  <noscript><div class="noscript-note">JavaScript is required to run this calculator.</div></noscript>
 </body>
 </html>

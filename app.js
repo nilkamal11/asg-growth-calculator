@@ -55,7 +55,7 @@ function setDirty() {
   document.body.classList.toggle('stale', Boolean(lastResult));
   downloadButton.disabled = true;
   if (ready && !busy) {
-    formStatus.textContent = lastResult ? 'Inputs changed. Select Calculate to update the results.' : 'Select Calculate to explore this scenario.';
+    formStatus.textContent = lastResult ? 'Inputs changed. Select Calculate.' : 'Select Calculate.';
     formStatus.classList.add('dirty');
   }
   form.elements.end_rit.disabled = !form.elements.include_actual.checked;
@@ -70,7 +70,7 @@ function clearResults() {
   lastResult = null;
   document.querySelectorAll('[data-metric]').forEach(node => { node.textContent = '—'; });
   document.querySelectorAll('[id^="diag-"]').forEach(node => { node.textContent = '—'; });
-  chartPlaceholder('Unable to calculate this scenario. Check the inputs above.');
+  chartPlaceholder('Check the inputs above.');
   document.querySelector('#scenario-summary').textContent = 'No current calculation.';
   document.querySelector('#reference-location').textContent = 'No reference selected.';
   document.querySelectorAll('#reference-parameters td').forEach(node => { node.textContent = '—'; });
@@ -83,13 +83,9 @@ function chartPlaceholder(message) {
   chartContainer.replaceChildren();
   const placeholder = document.createElement('div');
   placeholder.className = 'chart-placeholder';
-  const symbol = document.createElement('span');
-  symbol.className = 'placeholder-symbol';
-  symbol.textContent = '↗';
-  symbol.setAttribute('aria-hidden', 'true');
   const text = document.createElement('p');
   text.textContent = message;
-  placeholder.append(symbol, text);
+  placeholder.append(text);
   chartContainer.append(placeholder);
 }
 
@@ -103,13 +99,13 @@ function svgElement(tag, attributes = {}, text) {
 function renderChart(result) {
   const { inputs, growth } = result;
   if (!result.growth_available || !finite(inputs.start_rit) || !finite(growth.projected_ending_rit)) {
-    chartPlaceholder('A supported starting score and interval are needed to draw the growth chart. Available achievement results remain below.');
+    chartPlaceholder('Growth is unavailable for these inputs.');
     return;
   }
   // Scales and coordinates format R results for the chart; no norms are computed here.
   const width = Math.max(290, Math.round(chartContainer.clientWidth));
-  const height = 320;
-  const margin = { left: 54, right: width < 440 ? 110 : 145, top: 28, bottom: 53 };
+  const height = 260;
+  const margin = { left: 54, right: width < 440 ? 110 : 145, top: 22, bottom: 48 };
   const startX = margin.left;
   const endX = width - margin.right;
   const plotTop = margin.top;
@@ -134,23 +130,23 @@ function renderChart(result) {
   const svg = svgElement('svg', { viewBox: `0 0 ${width} ${height}`, width, height, role: 'img', 'aria-labelledby': 'chart-svg-title chart-svg-description' });
   svg.append(svgElement('title', { id: 'chart-svg-title' }, 'Starting score, projected ending score and actual ending score'));
   svg.append(svgElement('desc', { id: 'chart-svg-description' }, `Starting RIT ${compactNumber(inputs.start_rit)}. Projected ending RIT ${compactNumber(growth.projected_ending_rit)}.${hasActual ? ` Actual ending RIT ${compactNumber(inputs.end_rit)}.` : ' No actual ending score is included.'}`));
-  const commonText = { 'font-family': 'Inter, Segoe UI, Arial, sans-serif', fill: '#58717a', 'font-size': 11 };
+  const commonText = { 'font-family': 'Segoe UI, Arial, sans-serif', fill: '#66717a', 'font-size': 11 };
   for (let tick = 0; tick <= 4; tick++) {
     const value = minimum + (maximum - minimum) * tick / 4;
     const tickY = y(value);
-    svg.append(svgElement('line', { x1: startX, x2: endX + 5, y1: tickY, y2: tickY, stroke: '#e4eceb', 'stroke-width': 1 }));
+    svg.append(svgElement('line', { x1: startX, x2: endX + 5, y1: tickY, y2: tickY, stroke: '#e5e7eb', 'stroke-width': 1 }));
     svg.append(svgElement('text', { ...commonText, x: startX - 12, y: tickY + 4, 'text-anchor': 'end' }, compactNumber(value)));
   }
   svg.append(svgElement('text', { ...commonText, x: 12, y: (plotTop + plotBottom) / 2, transform: `rotate(-90 12 ${(plotTop + plotBottom) / 2})`, 'text-anchor': 'middle', 'font-size': 10 }, 'RIT SCORE'));
   svg.append(svgElement('line', { x1: startX, x2: endX, y1: y(inputs.start_rit), y2: projectedY, stroke: '#087c7a', 'stroke-width': 3, 'stroke-linecap': 'round' }));
-  if (hasActual) svg.append(svgElement('line', { x1: startX, x2: endX, y1: y(inputs.start_rit), y2: actualY, stroke: '#6161ba', 'stroke-width': 3, 'stroke-dasharray': '7 5', 'stroke-linecap': 'round' }));
+  if (hasActual) svg.append(svgElement('line', { x1: startX, x2: endX, y1: y(inputs.start_rit), y2: actualY, stroke: '#526773', 'stroke-width': 3, 'stroke-dasharray': '7 5', 'stroke-linecap': 'round' }));
   svg.append(svgElement('circle', { cx: startX, cy: y(inputs.start_rit), r: 5, fill: '#fff', stroke: '#087c7a', 'stroke-width': 2.5 }));
   svg.append(svgElement('circle', { cx: endX, cy: projectedY, r: 5, fill: '#fff', stroke: '#087c7a', 'stroke-width': 2.5 }));
-  if (hasActual) svg.append(svgElement('circle', { cx: endX, cy: actualY, r: 5, fill: '#6161ba', stroke: '#fff', 'stroke-width': 2 }));
+  if (hasActual) svg.append(svgElement('circle', { cx: endX, cy: actualY, r: 5, fill: '#526773', stroke: '#fff', 'stroke-width': 2 }));
   const labelX = endX + 12;
   const labelSize = width < 440 ? 10 : 12;
   svg.append(svgElement('text', { ...commonText, x: labelX, y: projectedLabelY + 4, fill: '#087c7a', 'font-size': labelSize, 'font-weight': 650 }, `Projected ${compactNumber(growth.projected_ending_rit)}`));
-  if (hasActual) svg.append(svgElement('text', { ...commonText, x: labelX, y: actualLabelY + 4, fill: '#6161ba', 'font-size': labelSize, 'font-weight': 650 }, `Actual ${compactNumber(inputs.end_rit)}`));
+  if (hasActual) svg.append(svgElement('text', { ...commonText, x: labelX, y: actualLabelY + 4, fill: '#526773', 'font-size': labelSize, 'font-weight': 650 }, `Actual ${compactNumber(inputs.end_rit)}`));
   const startLabelY = y(inputs.start_rit) > plotTop + 25 ? y(inputs.start_rit) - 14 : y(inputs.start_rit) + 22;
   svg.append(svgElement('text', { ...commonText, x: startX + 10, y: startLabelY, fill: '#173a45', 'font-size': 11, 'font-weight': 650 }, compactNumber(inputs.start_rit)));
   svg.append(svgElement('text', { ...commonText, x: startX, y: height - 29, 'text-anchor': 'start', fill: '#173a45', 'font-weight': 650 }, 'Starting'));
@@ -170,7 +166,8 @@ function renderResult(result) {
     document.querySelector(`[data-metric="${key}"]`).textContent = numberText(getter(result), digits);
   });
   const input = result.inputs;
-  document.querySelector('#scenario-summary').textContent = `${input.subject_label} · Grade ${gradeText(input.start_grade)} to ${gradeText(input.end_grade)} · ${finite(input.end_week) ? `Weeks ${input.start_week}–${input.end_week}` : `Starting week ${input.start_week}`}`;
+  const subjectLabel = input.subject === 'sci' ? 'Science' : input.subject_label;
+  document.querySelector('#scenario-summary').textContent = `${subjectLabel} · Grade ${gradeText(input.start_grade)} to ${gradeText(input.end_grade)} · ${finite(input.end_week) ? `Weeks ${input.start_week}–${input.end_week}` : `Starting week ${input.start_week}`}`;
   document.querySelector('#starting-context').textContent = timepointText(input.start_grade, input.start_week);
   document.querySelector('#ending-context').textContent = timepointText(input.end_grade, input.end_week);
   warningList.replaceChildren();
@@ -213,7 +210,7 @@ async function calculateCurrent() {
   downloadButton.disabled = true;
   calculateButton.querySelector('span').textContent = 'Calculating…';
   results.setAttribute('aria-busy', 'true');
-  formStatus.textContent = 'Running the R calculations…';
+  formStatus.textContent = 'Calculating…';
   formStatus.classList.remove('dirty');
   errorBox.hidden = true;
   try {
@@ -221,10 +218,10 @@ async function calculateCurrent() {
     if (currentRequest !== requestVersion) return;
     renderResult(result);
     if (dirty) {
-      formStatus.textContent = 'Inputs changed while calculating. Select Calculate to update the results.';
+      formStatus.textContent = 'Inputs changed. Select Calculate.';
       formStatus.classList.add('dirty');
     } else {
-      formStatus.textContent = 'Results updated using the R engine · M05 percentile method.';
+      formStatus.textContent = 'Updated.';
     }
     document.body.classList.toggle('stale', dirty);
     downloadButton.disabled = dirty;
@@ -232,7 +229,7 @@ async function calculateCurrent() {
     if (currentRequest !== requestVersion) return;
     clearResults();
     showError(error instanceof Error ? error.message : 'The R calculation could not be completed. Check the scenario and try again.');
-    formStatus.textContent = 'Calculation unsuccessful. Check the inputs and try again.';
+    formStatus.textContent = 'Check the inputs and try again.';
   } finally {
     if (currentRequest === requestVersion) {
       busy = false;
@@ -281,7 +278,7 @@ document.querySelector('#self-check-button').addEventListener('click', async () 
     calculateButton.disabled = !ready;
     downloadButton.disabled = !lastResult || dirty;
     if (dirty) {
-      formStatus.textContent = 'Inputs changed. Select Calculate to update the results.';
+      formStatus.textContent = 'Inputs changed. Select Calculate.';
       formStatus.classList.add('dirty');
     }
   }
@@ -308,12 +305,12 @@ new ResizeObserver(() => {
 
 async function start() {
   try {
-    await initializeR({ onStatus: status => {
-      runtimeLabel.textContent = status;
-      formStatus.textContent = status;
+    await initializeR({ onStatus: () => {
+      runtimeLabel.textContent = 'Loading…';
+      formStatus.textContent = 'Loading calculator…';
     } });
     ready = true;
-    runtimeLabel.textContent = 'R engine ready';
+    runtimeLabel.textContent = 'Ready';
     runtimeStatus.classList.add('ready');
     calculateButton.disabled = false;
     document.querySelector('#self-check-button').disabled = false;
