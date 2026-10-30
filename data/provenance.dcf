@@ -1,0 +1,10 @@
+NormsYear: 2025
+Level: student
+Method: M05 cubic logistic
+ParameterWorkbookSHA256: 930a855f265a4ef50cf0c92696d2dcb30e6309b0c9b88c14dc8433e7f156dba9
+SourceCacheSHA256: afda23d8aba38c7586d43641a7a9501c501ea2d60e351a87d13f6770d39070c3
+GrowthRows: 75720
+StatusRows: 1848
+WithheldStatusRows: 84
+GrowthMD5: 8febdfdf98173ebe137dba368e0fe451
+StatusMD5: b48270de3dea084d455bf7e3cbcce609
