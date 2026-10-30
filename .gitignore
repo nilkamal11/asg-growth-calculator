@@ -1,0 +1,12 @@
+# Keep this repository limited to the standalone application.
+.DS_Store
+Thumbs.db
+.env
+.env.*
+node_modules/
+.Rhistory
+.RData
+.Rproj.user/
+.library/
+*.log
+qa-local/
