@@ -1,0 +1,22 @@
+{
+  "date": "2026-10-30",
+  "source_cache_sha256": "afda23d8aba38c7586d43641a7a9501c501ea2d60e351a87d13f6770d39070c3",
+  "parameter_workbook_sha256": "930a855f265a4ef50cf0c92696d2dcb30e6309b0c9b88c14dc8433e7f156dba9",
+  "counts": {
+    "growth": 75720,
+    "status": 1848,
+    "withheld_status": 84
+  },
+  "outputs": {
+    "growth_parameters.csv.gz": {
+      "sha256": "44f2e9fe7bb70436e2bc2f075d35511c3b67caa37ed27ea3ee61555a7bd8a480",
+      "bytes": 2128476
+    },
+    "achievement_parameters.csv.gz": {
+      "sha256": "d04dc9c9cd4047546451f8cb68f7978e1cf27438aab43c48a16abf02dcbaf5de",
+      "bytes": 34193
+    }
+  },
+  "source_policy": "Valid cached growth only; all independent status keys; Math/Reading grade12 status quarantined, not repaired.",
+  "excluded_covariance_rows": "Inherited frozen-cache exclusions, not reestimated or averaged."
+}

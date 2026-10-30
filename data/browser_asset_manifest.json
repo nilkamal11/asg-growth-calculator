@@ -1,0 +1,14 @@
+{
+  "engine_origin": "Base-R ASG calculator; browser path-discovery adapter only",
+  "path_adapter_only": true,
+  "numerical_functions_byte_identical": true,
+  "r_engine_original_sha256": "1920824f1f446e5feb73924f5a1ab56680a6118baa44373bec8e2e3c6faa8915",
+  "assets": {
+    "r/norms_engine.R": "79d03453189220fa66ffe3114e5be21c42ca90e4638234574990dcc63d9b3b0a",
+    "r/self_checks.R": "244b6b111b764746a1a37bfb4d2a9964861f301713a1b36ab98689538d057745",
+    "data/growth_parameters.csv.gz": "44f2e9fe7bb70436e2bc2f075d35511c3b67caa37ed27ea3ee61555a7bd8a480",
+    "data/achievement_parameters.csv.gz": "d04dc9c9cd4047546451f8cb68f7978e1cf27438aab43c48a16abf02dcbaf5de",
+    "data/provenance.dcf": "7b9f709238b671eb9b041c819c94e96c9f490408d8df78f9e8bc0c7fe4073f21",
+    "data/golden_cases.csv": "44116cf54cde58cba9ad1fe43d68da9477dc8e378575e58b7192235396a19ca5"
+  }
+}
